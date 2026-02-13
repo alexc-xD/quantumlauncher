@@ -281,8 +281,6 @@ fn view_about_tab() -> Element<'static> {
             .on_press(Message::CoreOpenLink(WEBSITE.to_owned())),
         button_with_icon(icons::github(), "Github", 16)
             .on_press(Message::CoreOpenLink(GITHUB.to_owned())),
-        button_with_icon(icons::discord(), "Discord", 16)
-            .on_press(Message::CoreOpenLink(DISCORD.to_owned())),
     ]
     .spacing(5)
     .wrap();

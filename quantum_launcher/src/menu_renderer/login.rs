@@ -65,14 +65,14 @@ impl MenuLoginAlternate {
                 })
                 .size(20),
                 widget::vertical_space(),
-                widget::text("Username/Email:").size(12),
+                widget::text("Player Name:").size(12),
                 center_x(
-                    widget::text_input("Enter Username/Email...", &self.username)
+                    widget::text_input("Enter Player Name (Under 'Your players')...", &self.username)
                         .padding(padding)
                         .on_input(|n| Message::Account(AccountMessage::AltUsernameInput(n)))
                 ),
                 widget::row![
-                    widget::text("Password:").size(12),
+                    widget::text("Minecraft Token: (MC_xxx)").size(12),
                     widget::checkbox("Show", self.show_password)
                         .size(12)
                         .text_size(12)
@@ -84,7 +84,7 @@ impl MenuLoginAlternate {
                     .push_maybe(self.otp.as_deref().map(|otp| {
                         widget::column![
                             widget::text("OTP:").size(12),
-                            widget::text_input("Enter Username/Email...", otp)
+                            widget::text_input("Enter Player Name:", otp)
                                 .padding(padding)
                                 .on_input(|n| Message::Account(AccountMessage::AltOtpInput(n))),
                         ]
@@ -97,8 +97,8 @@ impl MenuLoginAlternate {
                 status,
                 widget::Space::with_height(5),
                 widget::row![
-                    widget::text("Or").size(14),
-                    widget::button(widget::text("Create an account").size(14)).on_press(
+                    //widget::text("Or").size(14),
+                    /*widget::button(widget::text("Create an account").size(14)).on_press(
                         Message::CoreOpenLink(
                             if self.is_littleskin {
                                 "https://littleskin.cn/auth/register"
@@ -107,7 +107,7 @@ impl MenuLoginAlternate {
                             }
                             .to_owned()
                         )
-                    )
+                    )*/
                 ]
                 .align_y(Alignment::Center)
                 .spacing(5)

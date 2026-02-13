@@ -70,7 +70,7 @@ pub const CLASSPATH_SEPARATOR: char = if cfg!(unix) { ':' } else { ';' };
 pub static REDACT_SENSITIVE_INFO: LazyLock<std::sync::Mutex<bool>> =
     LazyLock::new(|| std::sync::Mutex::new(true));
 
-pub const WEBSITE: &str = "https://mrmayman.github.io/quantumlauncher";
+pub const WEBSITE: &str = "http://dycraft.xyz";
 
 /// To prevent spawning of terminal (windows only).
 ///

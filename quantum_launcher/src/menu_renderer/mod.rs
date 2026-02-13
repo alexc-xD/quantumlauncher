@@ -25,8 +25,8 @@ mod settings;
 
 pub use onboarding::changelog;
 
-pub const DISCORD: &str = "https://discord.gg/bWqRaSXar5";
-pub const GITHUB: &str = "https://github.com/Mrmayman/quantumlauncher";
+pub const DISCORD: &str = "https://dycraft.xyz/";
+pub const GITHUB: &str = "https://github.com/alexc-xD/quantumlauncher/tree/dycraftlauncher";
 
 pub const FONT_MONO: iced::Font = iced::Font::with_name("JetBrains Mono");
 pub const FONT_DEFAULT: iced::Font = iced::Font::with_name("Inter");
@@ -417,7 +417,7 @@ pub fn view_account_login<'a>() -> Element<'a> {
             widget::horizontal_space(),
             widget::column![
                 widget::text("Login").size(20),
-                widget::button("Login with Microsoft").on_press(Message::Account(
+                /*widget::button("Login with Microsoft").on_press(Message::Account(
                     AccountMessage::OpenMenu {
                         is_from_welcome_screen: false,
                         kind: AccountType::Microsoft
@@ -434,8 +434,8 @@ pub fn view_account_login<'a>() -> Element<'a> {
                         is_from_welcome_screen: false,
                         kind: AccountType::LittleSkin
                     }
-                )),
-                 widget::button("Login with Drasl").on_press(Message::Account(
+                )),*/
+                 widget::button("Login to DYCraft").on_press(Message::Account(
                     AccountMessage::OpenMenu {
                         is_from_welcome_screen: false,
                         kind: AccountType::Custom
