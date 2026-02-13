@@ -9,7 +9,7 @@
 ![Discord Online](https://img.shields.io/discord/1280474064540012619?label=&labelColor=6A7EC2&logo=discord&logoColor=ffffff&color=7389D8)
 [![Made with iced](https://iced.rs/badge.svg)](https://github.com/iced-rs/iced)
 
-A minimalistic Minecraft launcher for Windows, macOS and Linux.
+A minimalistic Minecraft launcher for Windows, macOS and Linux. with DYcraft SMP preset
 
 ![Quantum Launcher running a Minecraft Instance](https://github.com/Mrmayman/quantumlauncher/raw/main/quantum_launcher.png)
 
