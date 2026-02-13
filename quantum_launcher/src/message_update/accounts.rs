@@ -158,7 +158,7 @@ impl Launcher {
                         })
                     });
                 }
-                AccountType::ElyBy | AccountType::LittleSkin => {
+                AccountType::ElyBy | AccountType::LittleSkin | AccountType::Custom => {
                     self.state = State::LoginAlternate(MenuLoginAlternate {
                         username: String::new(),
                         password: String::new(),
@@ -169,6 +169,8 @@ impl Launcher {
                         is_incorrect_password: false,
 
                         is_littleskin: matches!(kind, AccountType::LittleSkin),
+                        is_elyby: matches!(kind, AccountType::ElyBy),
+                        is_custom: matches!(kind, AccountType::Custom),
                         device_code_error: None,
                         oauth: None,
                     });
@@ -212,8 +214,10 @@ impl Launcher {
                             password,
                             if menu.is_littleskin {
                                 AccountType::LittleSkin
-                            } else {
+                            } else if menu.is_elyby {
                                 AccountType::ElyBy
+                            } else {
+                                AccountType::Custom
                             },
                         ),
                         |n| Message::Account(AccountMessage::AltLoginResponse(n.strerr())),
@@ -284,7 +288,7 @@ impl Launcher {
                     |n| Message::Account(AccountMessage::RefreshComplete(n.strerr())),
                 )
             }
-            AccountType::ElyBy | AccountType::LittleSkin => Task::perform(
+            AccountType::ElyBy | AccountType::LittleSkin | AccountType::Custom => Task::perform(
                 auth::yggdrasil::login_refresh(
                     account.username.clone(),
                     account.refresh_token.clone(),

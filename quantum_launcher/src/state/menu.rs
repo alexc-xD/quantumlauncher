@@ -560,6 +560,11 @@ pub struct MenuLoginAlternate {
 
     pub is_from_welcome_screen: bool,
 
+    pub is_elyby: bool,
+    
+    pub is_custom: bool,
+    //pub custom_auth_url: Option<String>,
+    
     pub is_littleskin: bool,
     pub oauth: Option<LittleSkinOauth>,
     pub device_code_error: Option<String>,

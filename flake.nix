@@ -70,6 +70,11 @@
           # Portal support
           xdg-desktop-portal
           xdg-desktop-portal-gtk
+
+            # Keyring/secrets support
+            libsecret
+            gnome-keyring
+            seahorse
         ];
 
         # Runtime library path for graphics drivers
@@ -98,7 +103,14 @@
           # pkg-config path
           PKG_CONFIG_PATH = pkgs.lib.makeSearchPath "lib/pkgconfig" buildInputs;
 
-          shellHook = ''
+          shellHook = ''  
+            # Start gnome-keyring daemon
+            eval $(gnome-keyring-daemon --start --components=secrets 2>/dev/null)
+            export SSH_AUTH_SOCK
+            # Create default keyring if it doesn't exist (empty password for dev)
+            echo "" | gnome-keyring-daemon --unlock 2>/dev/null || true
+
+
             echo "QuantumLauncher dev shell"
             echo "Rust: $(rustc --version)"
             echo ""

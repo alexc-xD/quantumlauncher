@@ -357,6 +357,7 @@ fn load_account(
                     username.strip_suffix(" (littleskin)").unwrap_or(username)
                 }
                 AccountType::Microsoft => username,
+                AccountType::Custom => username.strip_suffix(" (custom)").unwrap_or(username),
             }
         };
         ql_instances::auth::read_refresh_token(keyring_username, account_type).strerr()
@@ -368,6 +369,17 @@ fn load_account(
                 AccountType::ElyBy,
                 get_refresh_token_for_account_type(
                     AccountType::ElyBy,
+                    username,
+                    account.keyring_identifier.as_deref(),
+                ),
+            )
+        } else if account.account_type.as_deref() == Some("Custom")
+            || username.ends_with(" (custom)")
+        {
+            (
+                AccountType::Custom,
+                get_refresh_token_for_account_type(
+                    AccountType::Custom,
                     username,
                     account.keyring_identifier.as_deref(),
                 ),
@@ -405,6 +417,10 @@ fn load_account(
                 .to_owned(),
             AccountType::LittleSkin => username
                 .strip_suffix(" (littleskin)")
+                .unwrap_or(username)
+                .to_owned(),
+            AccountType::Custom => username
+                .strip_suffix(" (custom)")
                 .unwrap_or(username)
                 .to_owned(),
             AccountType::Microsoft => username.to_owned(),

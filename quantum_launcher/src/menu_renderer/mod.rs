@@ -435,7 +435,13 @@ pub fn view_account_login<'a>() -> Element<'a> {
                         kind: AccountType::LittleSkin
                     }
                 )),
-            ]
+                 widget::button("Login with Drasl").on_press(Message::Account(
+                    AccountMessage::OpenMenu {
+                        is_from_welcome_screen: false,
+                        kind: AccountType::Custom
+                    }
+                )),
+                ]
             .align_x(Alignment::Center)
             .spacing(5),
             widget::horizontal_space(),

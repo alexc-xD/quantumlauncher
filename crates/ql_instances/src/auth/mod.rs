@@ -27,6 +27,7 @@ impl AccountData {
             AccountType::Microsoft => "",
             AccountType::ElyBy => " (elyby)",
             AccountType::LittleSkin => " (littleskin)",
+            AccountType::Custom => " (custom)",
         };
         format!("{}{suffix}", self.nice_username)
     }
@@ -37,6 +38,7 @@ impl AccountData {
             AccountType::Microsoft => None,
             AccountType::ElyBy => Some("ely.by"),
             AccountType::LittleSkin => Some("https://littleskin.cn/api/yggdrasil"),
+            AccountType::Custom => Some("https://drasl.unmojang.org/authlib-injector"),
         }
     }
 }
@@ -46,6 +48,7 @@ pub enum AccountType {
     Microsoft,
     ElyBy,
     LittleSkin,
+    Custom,
 }
 
 impl Display for AccountType {
@@ -57,6 +60,7 @@ impl Display for AccountType {
                 AccountType::Microsoft => "Microsoft",
                 AccountType::ElyBy => "ElyBy",
                 AccountType::LittleSkin => "LittleSkin",
+                AccountType::Custom => "Custom",
             }
         )
     }
@@ -71,6 +75,7 @@ impl AccountType {
             AccountType::LittleSkin => {
                 "https://littleskin.cn/api/yggdrasil/authserver/authenticate"
             }
+            AccountType::Custom => "https://drasl.unmojang.org/auth/authenticate",
         }
     }
 
@@ -80,6 +85,7 @@ impl AccountType {
             AccountType::Microsoft => unreachable!(),
             AccountType::ElyBy => "https://authserver.ely.by/auth/refresh",
             AccountType::LittleSkin => "https://littleskin.cn/api/yggdrasil/authserver/refresh",
+            AccountType::Custom => "https://drasl.unmojang.org/auth/refresh",
         }
     }
 
@@ -87,7 +93,7 @@ impl AccountType {
     pub fn yggdrasil_needs_agent_field(self) -> bool {
         match self {
             AccountType::Microsoft | AccountType::ElyBy => false,
-            AccountType::LittleSkin => true,
+            AccountType::LittleSkin | AccountType::Custom => true,
         }
     }
 
@@ -100,6 +106,7 @@ impl AccountType {
                     AccountType::Microsoft => "",
                     AccountType::ElyBy => "#elyby",
                     AccountType::LittleSkin => "#littleskin",
+                    AccountType::Custom => "#custom"
                 }
             ),
         )?)
@@ -111,6 +118,7 @@ impl AccountType {
             AccountType::Microsoft => ms::CLIENT_ID,
             AccountType::ElyBy => "quantumlauncher1",
             AccountType::LittleSkin => "1160",
+            AccountType::Custom => "quantumlauncher2",
         }
     }
 
@@ -120,6 +128,7 @@ impl AccountType {
             AccountType::Microsoft => name,
             AccountType::ElyBy => name.strip_suffix(" (elyby)").unwrap_or(name),
             AccountType::LittleSkin => name.strip_suffix(" (littleskin)").unwrap_or(name),
+            AccountType::Custom => name.strip_suffix(" (custom)").unwrap_or(name),
         }
     }
 }
@@ -136,6 +145,10 @@ impl AccountData {
     #[must_use]
     pub fn is_microsoft(&self) -> bool {
         matches!(self.account_type, AccountType::Microsoft)
+    }
+    #[must_use]
+    pub fn is_custom(&self) -> bool {
+        matches!(self.account_type, AccountType::Custom)
     }
 }
 

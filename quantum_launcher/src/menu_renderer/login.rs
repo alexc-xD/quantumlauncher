@@ -58,8 +58,10 @@ impl MenuLoginAlternate {
             widget::column![
                 widget::text(if self.is_littleskin {
                     "LittleSkin Login"
-                } else {
+                } else if self.is_elyby {
                     "ElyBy Login"
+                } else {
+                    "Custom Login"
                 })
                 .size(20),
                 widget::vertical_space(),
