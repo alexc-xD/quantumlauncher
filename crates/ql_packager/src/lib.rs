@@ -11,7 +11,8 @@ use ql_instances::DownloadError;
 mod export;
 mod import;
 mod multimc;
-
+mod import_web;
+   pub use import_web::fetch_and_create_default_instance;
 pub use export::{export_instance, EXCEPTIONS};
 pub use import::import_instance;
 
