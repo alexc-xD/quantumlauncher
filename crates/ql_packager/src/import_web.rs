@@ -1,7 +1,6 @@
 use std::sync::mpsc::Sender;
 
 use ql_core::{info, pt, GenericProgress, InstanceSelection, ListEntry, Loader, CLIENT};
-
 use serde::Deserialize;
 
 use super::InstancePackageError;
@@ -13,13 +12,8 @@ pub struct DefaultInstanceConfig {
     pub name: String,
     pub version: String,
     pub version_type: String,
-    pub loader: Option<LoaderConfig>,
-}
-
-#[derive(Deserialize)]
-pub struct LoaderConfig {
-    pub kind: String,           // "fabric", "forge", "quilt", etc.
-    pub version: Option<String>, // None = latest
+    pub loader: Option<String>,
+    pub loader_version: Option<String>,
 }
 
 pub const OUT_OF: usize = 3;
@@ -84,39 +78,41 @@ async fn create_instance_from_config(
     let version = ListEntry::with_kind(config.version.clone(), &config.version_type);
 
     let (d_send, d_recv) = std::sync::mpsc::channel();
-let sender_clone = sender.clone();
-std::thread::spawn(move || {
-    if let Some(s) = sender_clone {
-        super::import::pipe_progress(d_recv, &s);
-    } else {
-        // drain the channel
-        for _ in d_recv {}
-    }
-});
+    let sender_clone = sender.clone();
+    std::thread::spawn(move || {
+        if let Some(s) = sender_clone {
+            super::import::pipe_progress(d_recv, &s);
+        } else {
+            for _ in d_recv {}
+        }
+    });
 
-ql_instances::create_instance(config.name.clone(), version, Some(d_send), true).await?;
+    ql_instances::create_instance(config.name.clone(), version, Some(d_send), true).await?;
 
     let instance = InstanceSelection::new(&config.name, false);
 
     // Install loader if specified
-    if let Some(loader) = config.loader {
-        if let Some(ref s) = sender {
-            _ = s.send(GenericProgress {
-                done: 2,
-                total: OUT_OF,
-                message: Some(format!("Installing {} loader...", loader.kind)),
-                has_finished: false,
-            });
-        }
-let mod_type = match loader.kind.to_lowercase().as_str() {
-    "fabric" => Loader::Fabric,
-    "forge" => Loader::Forge,
-    "quilt" => Loader::Quilt,
-    "neoforge" => Loader::Neoforge,
-    _ => Loader::Vanilla,
-};
+    if let Some(loader_str) = config.loader {
+        let mod_type = match loader_str.to_lowercase().as_str() {
+            "fabric" => Loader::Fabric,
+            "forge" => Loader::Forge,
+            "quilt" => Loader::Quilt,
+            "neoforge" => Loader::Neoforge,
+            _ => Loader::Vanilla,
+        };
 
-if !matches!(mod_type, Loader::Vanilla) {
+        if !matches!(mod_type, Loader::Vanilla) {
+            if let Some(ref s) = sender {
+                _ = s.send(GenericProgress {
+                    done: 2,
+                    total: OUT_OF,
+                    message: Some(format!("Installing {} loader...", loader_str)),
+                    has_finished: false,
+                });
+            }
+
+            pt!("Installing loader: {}", loader_str);
+
             ql_mod_manager::loaders::install_specified_loader(
                 instance.clone(),
                 mod_type,

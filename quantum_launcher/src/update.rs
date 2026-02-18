@@ -54,9 +54,18 @@ impl Launcher {
             | Message::LaunchGameExited(Err(err))
             | Message::CoreListLoaded(Err(err)) => self.set_error(err),
 
-            Message::WelcomeContinueToTheme => {
-                self.state = State::Welcome(MenuWelcome::P2Theme);
+Message::WelcomeContinueToTheme => {
+    self.state = State::Welcome(MenuWelcome::P2Theme);
+    return Task::perform(
+        ql_packager::fetch_and_create_default_instance(None),
+        |result| {
+            if let Err(e) = result {
+                ql_core::err!("Default instance creation failed: {e}");
             }
+            Message::Nothing
+        }
+    );
+}
             Message::WelcomeContinueToAuth => {
                 self.state = State::Welcome(MenuWelcome::P3Auth);
             }

@@ -38,7 +38,7 @@ impl AccountData {
             AccountType::Microsoft => None,
             AccountType::ElyBy => Some("ely.by"),
             AccountType::LittleSkin => Some("https://littleskin.cn/api/yggdrasil"),
-            AccountType::Custom => Some("https://drasl.unmojang.org/authlib-injector"),
+            AccountType::Custom => Some("https://dycraft.xyz/authlib-injector"),
         }
     }
 }
@@ -75,7 +75,7 @@ impl AccountType {
             AccountType::LittleSkin => {
                 "https://littleskin.cn/api/yggdrasil/authserver/authenticate"
             }
-            AccountType::Custom => "https://drasl.unmojang.org/auth/authenticate",
+            AccountType::Custom => "https://dycraft.xyz/auth/authenticate",
         }
     }
 
@@ -85,7 +85,7 @@ impl AccountType {
             AccountType::Microsoft => unreachable!(),
             AccountType::ElyBy => "https://authserver.ely.by/auth/refresh",
             AccountType::LittleSkin => "https://littleskin.cn/api/yggdrasil/authserver/refresh",
-            AccountType::Custom => "https://drasl.unmojang.org/auth/refresh",
+            AccountType::Custom => "https://dycraft.xyz/auth/refresh",
         }
     }
 
